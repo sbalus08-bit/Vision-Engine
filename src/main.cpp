@@ -55,6 +55,40 @@ cv::meanStdDev(laplacian, laplacianMean, laplacianStdDev);
 double sharpness = laplacianStdDev[0] * laplacianStdDev[0];
 
 
+    // ========================================
+    // IMAGE VALIDATION ENGINE
+    // ========================================
+
+    // Define validation thresholds
+    const int MIN_WIDTH = 800;
+    const int MIN_HEIGHT = 600;
+
+    const double MIN_BRIGHTNESS = 50.0;
+    const double MAX_BRIGHTNESS = 220.0;
+
+    const double MIN_CONTRAST = 20.0;
+    const double MIN_SHARPNESS = 1000.0;
+
+    // Perform validation checks
+    bool resolutionValid =
+        width >= MIN_WIDTH && height >= MIN_HEIGHT;
+
+    bool brightnessValid =
+        averageBrightness[0] >= MIN_BRIGHTNESS &&
+        averageBrightness[0] <= MAX_BRIGHTNESS;
+
+    bool contrastValid = contrast >= MIN_CONTRAST;
+
+    bool sharpnessValid = sharpness >= MIN_SHARPNESS;
+
+    // Determine overall validation result
+    bool imageValid =
+        resolutionValid &&
+        brightnessValid &&
+        contrastValid &&
+        sharpnessValid;
+
+
     // Display analysis results
     std::cout << "IMAGE ANALYSIS\n";
     std::cout << "--------------------------------\n";
@@ -73,6 +107,31 @@ double sharpness = laplacianStdDev[0] * laplacianStdDev[0];
           << sharpness << "\n";
 
     std::cout << "\nImage processing completed.\n";
+
+
+    // Display validation results
+    std::cout << "\n";
+    std::cout << "================================\n";
+    std::cout << "       VALIDATION REPORT\n";
+    std::cout << "================================\n";
+
+    std::cout << "Resolution: "
+              << (resolutionValid ? "PASS" : "FAIL") << "\n";
+
+    std::cout << "Brightness: "
+              << (brightnessValid ? "PASS" : "FAIL") << "\n";
+
+    std::cout << "Contrast: "
+              << (contrastValid ? "PASS" : "FAIL") << "\n";
+
+    std::cout << "Sharpness: "
+              << (sharpnessValid ? "PASS" : "FAIL") << "\n";
+
+    std::cout << "--------------------------------\n";
+
+    std::cout << "OVERALL RESULT: "
+              << (imageValid ? "PASSED" : "FAILED") << "\n";
+
 
     return 0;
 }
