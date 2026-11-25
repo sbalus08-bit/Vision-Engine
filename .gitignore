@@ -1,0 +1,15 @@
+# Compiled executables
+# Prevents generated files and temporary files cluttering Git.
+*.exe
+*.o
+*.obj
+
+# Build directories
+build/
+cmake-build-*/
+
+# IDE files
+.vscode/
+
+# Temporary files
+*.log
