@@ -38,11 +38,24 @@ FetchContent_MakeAvailable(googletest)
 # Enable automated testing
 enable_testing()
 
+
 # ImageValidator test executable
 add_executable(image-validator-tests
     tests/image_validator_tests.cpp
     src/image_validator.cpp
+    src/image_analyzer.cpp
 )
+
+target_include_directories(image-validator-tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${OpenCV_INCLUDE_DIRS}
+)
+
+target_link_libraries(image-validator-tests PRIVATE
+    GTest::gtest_main
+    ${OpenCV_LIBS}
+)
+
 
 target_include_directories(image-validator-tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include

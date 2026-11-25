@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <exception>
 #include <opencv2/opencv.hpp>
 
 #include "image_analyzer.h"
@@ -23,44 +24,52 @@ int main()
         return 1;
     }
 
-    // Analyse the image
-    ImageAnalyzer analyzer;
-    ImageMetrics metrics = analyzer.analyze(image);
+    try
+    {
+        // Analyse the image
+        ImageAnalyzer analyzer;
+        ImageMetrics metrics = analyzer.analyze(image);
 
-    // Validate the measurements
-    ImageValidator validator;
-    ValidationResult result = validator.validate(metrics);
+        // Validate the measurements
+        ImageValidator validator;
+        ValidationResult result = validator.validate(metrics);
 
-    // Display analysis
-    std::cout << "Image Analysis Results\n";
-    std::cout << "------------------------------\n";
+        // Display analysis
+        std::cout << "Image Analysis Results\n";
+        std::cout << "------------------------------\n";
 
-    std::cout << "Width: " << metrics.width << "\n";
-    std::cout << "Height: " << metrics.height << "\n";
-    std::cout << "Brightness: " << metrics.brightness << "\n";
-    std::cout << "Contrast: " << metrics.contrast << "\n";
-    std::cout << "Sharpness: " << metrics.sharpness << "\n\n";
+        std::cout << "Width: " << metrics.width << "\n";
+        std::cout << "Height: " << metrics.height << "\n";
+        std::cout << "Brightness: " << metrics.brightness << "\n";
+        std::cout << "Contrast: " << metrics.contrast << "\n";
+        std::cout << "Sharpness: " << metrics.sharpness << "\n\n";
 
-    // Display validation
-    std::cout << "Validation Results\n";
-    std::cout << "------------------------------\n";
+        // Display validation
+        std::cout << "Validation Results\n";
+        std::cout << "------------------------------\n";
 
-    std::cout << "Resolution: "
-              << (result.resolutionValid ? "PASS" : "FAIL") << "\n";
+        std::cout << "Resolution: "
+                  << (result.resolutionValid ? "PASS" : "FAIL") << "\n";
 
-    std::cout << "Brightness: "
-              << (result.brightnessValid ? "PASS" : "FAIL") << "\n";
+        std::cout << "Brightness: "
+                  << (result.brightnessValid ? "PASS" : "FAIL") << "\n";
 
-    std::cout << "Contrast: "
-              << (result.contrastValid ? "PASS" : "FAIL") << "\n";
+        std::cout << "Contrast: "
+                  << (result.contrastValid ? "PASS" : "FAIL") << "\n";
 
-    std::cout << "Sharpness: "
-              << (result.sharpnessValid ? "PASS" : "FAIL") << "\n";
+        std::cout << "Sharpness: "
+                  << (result.sharpnessValid ? "PASS" : "FAIL") << "\n";
 
-    std::cout << "------------------------------\n";
+        std::cout << "------------------------------\n";
 
-    std::cout << "OVERALL RESULT: "
-              << (result.imageValid ? "PASSED" : "FAILED") << "\n";
+        std::cout << "OVERALL RESULT: "
+                  << (result.imageValid ? "PASSED" : "FAILED") << "\n";
 
-    return result.imageValid ? 0 : 1;
+        return result.imageValid ? 0 : 1;
+    }
+    catch (const std::exception& error)
+    {
+        std::cerr << "ERROR: " << error.what() << "\n";
+        return 1;
+    }
 }

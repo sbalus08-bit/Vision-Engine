@@ -1,6 +1,9 @@
 
 #include <gtest/gtest.h>
 #include "image_validator.h"
+#include <opencv2/core.hpp>
+#include "image_analyzer.h"
+#include <stdexcept>
 
 // Create a set of valid image measurements
 ImageMetrics validMetrics()
@@ -138,4 +141,16 @@ TEST(ImageValidatorTests, AcceptsMinimumSharpness)
 
     EXPECT_TRUE(result.sharpnessValid);
     EXPECT_TRUE(result.imageValid);
+}
+
+TEST(ImageAnalyzerTests, RejectsEmptyImage)
+{
+    ImageAnalyzer analyzer;
+
+    cv::Mat emptyImage;
+
+    EXPECT_THROW(
+        analyzer.analyze(emptyImage),
+        std::invalid_argument
+    );
 }
