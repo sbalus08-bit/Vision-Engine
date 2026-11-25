@@ -1,7 +1,9 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
+
 #include "image_analyzer.h"
+#include "image_validator.h"
 
 int main()
 {
@@ -21,36 +23,15 @@ int main()
         return 1;
     }
 
+    // Analyse the image
     ImageAnalyzer analyzer;
     ImageMetrics metrics = analyzer.analyze(image);
 
-    const int MIN_WIDTH = 800;
-    const int MIN_HEIGHT = 600;
-    const double MIN_BRIGHTNESS = 50.0;
-    const double MAX_BRIGHTNESS = 220.0;
-    const double MIN_CONTRAST = 20.0;
-    const double MIN_SHARPNESS = 1000.0;
+    // Validate the measurements
+    ImageValidator validator;
+    ValidationResult result = validator.validate(metrics);
 
-    bool resolutionValid =
-        metrics.width >= MIN_WIDTH &&
-        metrics.height >= MIN_HEIGHT;
-
-    bool brightnessValid =
-        metrics.brightness >= MIN_BRIGHTNESS &&
-        metrics.brightness <= MAX_BRIGHTNESS;
-
-    bool contrastValid =
-        metrics.contrast >= MIN_CONTRAST;
-
-    bool sharpnessValid =
-        metrics.sharpness >= MIN_SHARPNESS;
-
-    bool imageValid =
-        resolutionValid &&
-        brightnessValid &&
-        contrastValid &&
-        sharpnessValid;
-
+    // Display analysis
     std::cout << "Image Analysis Results\n";
     std::cout << "------------------------------\n";
 
@@ -60,25 +41,26 @@ int main()
     std::cout << "Contrast: " << metrics.contrast << "\n";
     std::cout << "Sharpness: " << metrics.sharpness << "\n\n";
 
+    // Display validation
     std::cout << "Validation Results\n";
     std::cout << "------------------------------\n";
 
     std::cout << "Resolution: "
-              << (resolutionValid ? "PASS" : "FAIL") << "\n";
+              << (result.resolutionValid ? "PASS" : "FAIL") << "\n";
 
     std::cout << "Brightness: "
-              << (brightnessValid ? "PASS" : "FAIL") << "\n";
+              << (result.brightnessValid ? "PASS" : "FAIL") << "\n";
 
     std::cout << "Contrast: "
-              << (contrastValid ? "PASS" : "FAIL") << "\n";
+              << (result.contrastValid ? "PASS" : "FAIL") << "\n";
 
     std::cout << "Sharpness: "
-              << (sharpnessValid ? "PASS" : "FAIL") << "\n";
+              << (result.sharpnessValid ? "PASS" : "FAIL") << "\n";
 
     std::cout << "------------------------------\n";
 
     std::cout << "OVERALL RESULT: "
-              << (imageValid ? "PASSED" : "FAILED") << "\n";
+              << (result.imageValid ? "PASSED" : "FAILED") << "\n";
 
-    return imageValid ? 0 : 1;
+    return result.imageValid ? 0 : 1;
 }

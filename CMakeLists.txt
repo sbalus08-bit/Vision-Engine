@@ -11,6 +11,7 @@ find_package(OpenCV REQUIRED)
 add_executable(vision-engine
     src/main.cpp
     src/image_analyzer.cpp
+    src/image_validator.cpp
 )
 
 target_link_libraries(vision-engine
@@ -21,3 +22,36 @@ target_include_directories(vision-engine PRIVATE
     ${OpenCV_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+
+
+# GoogleTest configuration
+include(FetchContent)
+
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+
+FetchContent_MakeAvailable(googletest)
+
+# Enable automated testing
+enable_testing()
+
+# ImageValidator test executable
+add_executable(image-validator-tests
+    tests/image_validator_tests.cpp
+    src/image_validator.cpp
+)
+
+target_include_directories(image-validator-tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${OpenCV_INCLUDE_DIRS}
+)
+
+target_link_libraries(image-validator-tests PRIVATE
+    GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(image-validator-tests)
