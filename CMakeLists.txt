@@ -10,12 +10,14 @@ find_package(OpenCV REQUIRED)
 
 add_executable(vision-engine
     src/main.cpp
+    src/image_analyzer.cpp
 )
 
 target_link_libraries(vision-engine
     PRIVATE ${OpenCV_LIBS}
 )
 
-target_include_directories(vision-engine
-    PRIVATE ${OpenCV_INCLUDE_DIRS}
+target_include_directories(vision-engine PRIVATE
+    ${OpenCV_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
