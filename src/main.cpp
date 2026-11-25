@@ -6,14 +6,24 @@
 #include "image_analyzer.h"
 #include "image_validator.h"
 
-int main()
+int main(int argc, char* argv[])
 {
     std::cout << "================================\n";
     std::cout << "          VISION ENGINE\n";
     std::cout << "================================\n\n";
 
-    const std::string imagePath =
-        "assets/sample_images/sample_document.png";
+    if (argc < 2)
+{
+    std::cerr << "ERROR: No image path supplied.\n\n";
+    std::cerr << "Usage:\n";
+    std::cerr << "vision-engine.exe <image_path>\n\n";
+    std::cerr << "Example:\n";
+    std::cerr << "vision-engine.exe \"assets/sample_images/sample_document.png\"\n";
+
+    return 1;
+}
+
+    const std::string imagePath = argv[1];
 
     cv::Mat image = cv::imread(imagePath);
 
